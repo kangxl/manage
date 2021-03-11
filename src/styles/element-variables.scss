@@ -1,0 +1,90 @@
+$--font-path: '~element-ui/lib/theme-chalk/fonts';
+
+@import "~element-ui/packages/theme-chalk/src/index";
+.el-dialog__header {
+  padding: 10px 20px !important;
+  background-color: #f9fafc !important;
+  border-bottom: 1px solid #eaedf1 !important;
+}
+.el-dialog__footer {
+  padding: 10px 20px !important;
+  border-top: 1px solid #eee !important;
+  background-color: #f9f9f9 !important;
+}
+.el-dialog__footer .el-button {
+  padding: 7px 15px 9px !important;
+}
+.el-dialog__body {
+  padding: 10px 50px 10px 20px !important;
+}
+.el-dialog__headerbtn {
+  top: 10px !important;
+}
+.el-table .el-loading-mask {
+  background-color: rgba(78, 78, 78, 0.9);
+}
+.td-bg-line div.cell{
+  padding-left: 0px;
+}
+// el选中行颜色
+.el-table__body tr.current-row > td {
+  background-color: #dfe4ec !important;
+}
+.el-table__body-wrapper .current-row td:first-child{
+  border-left:3px solid #8e98a9;
+}
+// td间距变小
+.el-table th .cell {
+  padding: 2px 2px !important;
+}
+.el-table td {
+  padding: 0 !important;
+}
+.el-table .cell{
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+.el-notification{
+  transform: rotate(0deg) !important;
+}
+
+.el-input__inner{
+  // height:36px !important;
+  height:36px;
+}
+.el-upload input[type=file] {
+  display: none !important;
+}
+.el-input-number input{
+  text-align: left !important;
+}
+
+// 表单label文字过长，文字高度问题
+.itemHeight .el-form-item__label {
+  line-height: 16px;
+}
+// 解决tooltip内容过长部分隐藏问题
+.el-tooltip__popper {
+  max-width: 90%;
+  line-height: 120%;
+}
+
+.el-form .el-form-item--medium .el-form-item__label {
+  line-height: 16px;
+}
+
+.my-scrollbar,.my-scrollbar .el-scrollbar__view{
+  height:100%;
+}
+.myBadge .el-badge__content{
+  top:10px;
+    right: 28px;
+}
+.el-drawer__wrapper .el-drawer__header{
+  padding: 10px;
+  background-color: #f9fafc !important;
+  border-bottom: 1px solid #eaedf1 !important;
+}
+.el-form-item.clear-margin-left .el-form-item__content{
+  margin-left: 0px !important;
+}
