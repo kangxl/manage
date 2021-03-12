@@ -1,8 +1,13 @@
 <template>
   <el-scrollbar class="my-scrollbar">
     <el-menu
+      :active-text-color="menuActiveColor"
+      :background-color="menuBackground"
       class="myMenu"
-      :collapse="isCollapse"
+      :collapse="isCollapseMenu"
+      :default-active="$route.meta.index"
+      :default-openeds="openeds"
+      :text-color="menuColor"
     >
       <menu-item
         v-for="(route,index) in menu"
@@ -10,11 +15,17 @@
         :item="route"
       />
     </el-menu>
+    <div
+      class="menu-shrink"
+      @click="leftToggle"
+    >
+      <i :class="{'el-icon-caret-left':!isCollapseMenu,'el-icon-caret-right':isCollapseMenu}" />
+    </div>
   </el-scrollbar>
-
 </template>
 <script>
 import MenuItem from './menu-item'
+import { resources } from '@/router'
 import { mapState } from 'vuex'
 export default {
   name: 'Left',
@@ -23,46 +34,54 @@ export default {
   },
   data () {
     return {
-      menu: [
-        { index: '1', name: '导航1.1', icon: '', href: '' },
-        {
-          index: '1.1', name: '导航1', icon: '', href: '', children: [
-            { index: '1.1.1', name: '导航1.1', icon: '', href: '' }
-          ]
-        },
-        {
-          index: '2', name: '导航2', icon: '', href: '', children: [
-            { index: '2.1', name: '导航1.1', icon: '', href: '' }
-          ]
-        },
-        {
-          index: '3', name: '导航3', icon: '', href: '', children: [
-            { index: '3.1', name: '导航1.1', icon: '', href: '' }
-          ]
-        }
-      ]
+      openeds: [this.$route.meta.index],
+      menu: resources.menus
     }
   },
   computed: {
     ...mapState({
-      isCollapse: state => state.setting.isCollapseMenu
+      isCollapseMenu: state => state.setting.isCollapseMenu,
+      menuPosition: state => state.setting.menuPosition,
+      menuBackground: state => state.setting.menuBackground,
+      topColor: state => state.setting.topColor,
+      topBackground: state => state.setting.topBackground,
+      menuColor: state => state.setting.menuColor,
+      menuActiveColor: state => state.setting.menuActiveColor
     })
   },
   created () {
 
   },
   methods: {
-
+    leftToggle () {
+      this.$store.dispatch('setting/update_settingProp', { value: !this.$store.getters.setting.isCollapseMenu, prop: 'isCollapseMenu' })
+    }
   }
 }
 </script>
-<style >
+<style lang="scss" >
+.menu-shrink {
+  top: 0px;
+  bottom: 0px;
+  right: 0px;
+  position: absolute;
+  margin: auto;
+  width: 10px;
+  height: 150px;
+  background: #d5d1d1;
+  z-index: 100;
+  i {
+    line-height: 150px;
+    color: #000;
+    font-size: 10px;
+  }
+}
 .myMenu,
 .myMenu .el-menu {
   height: 100%;
   /* background-image: linear-gradient(#3782ad, #00ffb8); */
 }
 .my-scrollbar .el-scrollbar__wrap {
-  overflow: hidden;
+  overflow-y: auto;
 }
 </style>

@@ -16,8 +16,8 @@
     <my-table-search
       v-if="pageConfig.isNeedSearch"
       ref="mySearch"
-      :search-components="searchComponents"
       :conditions.sync="conditions"
+      :search-components="searchComponents"
       @search="refreshList"
     >
       <template v-slot:front>
@@ -32,8 +32,8 @@
     </my-table-search>
     <el-table
       v-loading="mixinPage.isLoading"
-      :data="mixinPage.list"
       border
+      :data="mixinPage.list"
       height="100%"
       highlight-current-row
       style="width: 100%"
@@ -42,8 +42,8 @@
         v-for="item in columns"
         :key="item.prop"
         :label="item.label"
-        :width="item.width"
         show-overflow-tooltip
+        :width="item.width"
       >
         <template
           v-if="item.type=='1'"
@@ -82,8 +82,8 @@
       </el-table-column>
       <el-table-column
         v-if="pageConfig.hasHandle"
-        :width="pageConfig.handleWidth||100"
         label="操作"
+        :width="pageConfig.handleWidth||100"
       >
         <template v-slot="scope">
           <slot
@@ -108,8 +108,8 @@
     <div class="text-center">
       <el-pagination
         :current-page.sync="mixinPage.pageNum"
-        :page-size="mixinPage.pageSize"
         layout="total,prev, pager, next"
+        :page-size="mixinPage.pageSize"
         :total="mixinPage.total"
         @current-change="mixin_page_currentChange"
       />

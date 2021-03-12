@@ -1,16 +1,15 @@
 <template>
-  <el-dialog
-    :append-to-body="true"
-    :visible.sync="isOpen"
+  <my-dialog
+    :loading="loading"
     :title="getTitle"
-    width="50%"
-    @close="closeDialog"
+    @close="$emit('close')"
+    @submit="submitForm"
   >
     <el-form
       ref="form"
+      label-width="80px"
       :model="form"
       :rules="formRules"
-      label-width="80px"
     >
       <el-form-item
         label="账号"
@@ -25,8 +24,8 @@
         <el-input
           v-else
           v-model.trim="form.account"
-          name="account"
           autocomplete="new-account"
+          name="account"
         />
       </el-form-item>
       <el-row v-if="!form.id">
@@ -42,8 +41,8 @@
             />
             <el-input
               v-model.trim="form.password"
-              name="password"
               autocomplete="new-password"
+              name="password"
               type="password"
             />
           </el-form-item>
@@ -55,8 +54,8 @@
           >
             <el-input
               v-model.trim="form.checkPass"
-              type="password"
               auto-complete="off"
+              type="password"
             />
           </el-form-item>
         </el-col>
@@ -74,18 +73,7 @@
         </el-checkbox-group>
       </el-form-item>
     </el-form>
-    <div
-      slot="footer"
-      class="dialog-footer"
-    >
-      <el-button @click="closeDialog">取消</el-button>
-      <el-button
-        :loading="loading"
-        type="primary"
-        @click="submitForm()"
-      >提交</el-button>
-    </div>
-  </el-dialog>
+  </my-dialog>
 </template>
 <script>
 import { addAccount, editAccount, getAccountById } from '../../api/accountApi'
@@ -124,7 +112,6 @@ export default {
       }
     }
     return {
-      isOpen: true,
       loading: false,
       form: { roleIds: [] },
       roleList: [],
@@ -164,12 +151,6 @@ export default {
       getAllRole().then(res => {
         this.roleList = res.data || []
       })
-    },
-    /**
-     * 关闭角色添加修改窗口
-     */
-    closeDialog () {
-      this.$emit('close')
     },
     /**
      * 提交角色添加修改数据

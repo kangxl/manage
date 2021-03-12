@@ -19,10 +19,14 @@ import App from './App'
 import permission, { authPermission } from './directive/permission'
 import myLoading from '@/components/myLoading'
 import myImagePreview from '@/components/myImagePreview'
+import MyDialog from '@/components/MyDialog'
 import VueEditor from 'vue2-editor'
+import dragDialog from './directive/el-dragDialog'
 Vue.config.errorHandler = function (err, vm, info) {
   console.error('error', err, vm, info)
 }
+Vue.component('my-dialog', MyDialog)
+Vue.use(dragDialog)
 Vue.use(VueEditor)
 Vue.use(permission)
 Vue.use(myLoading)
