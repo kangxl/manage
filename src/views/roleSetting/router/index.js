@@ -10,24 +10,32 @@ import Layout from '@/views/layout'
 export default {
   path: '/role',
   component: Layout,
-  menuName: '角色管理',
-  icon: '',
-  children: [{
-    path: 'list',
-    menuName: '角色列表',
+  meta: {
+    title: '角色管理',
+    menuName: '角色管理',
     icon: '',
+    authCode: ''
+  },
+  children: [{
+    name: 'RoleList1',
+    path: 'list',
     component: () => import('../pages/roleList'),
     meta: {
-      authCode: 'no'
+      title: '角色列表',
+      menuName: '角色列表',
+      icon: '',
+      authCode: ''
     }
   },
   {
     path: 'setting',
-    menuName: '角色设置',
-    icon: '',
+    name: 'RoleSetting',
     component: () => import('../pages/roleSetting'),
     meta: {
-      authCode: 'no'
+      title: '角色设置',
+      menuName: '角色设置',
+      icon: '',
+      authCode: ''
     }
   }]
 }

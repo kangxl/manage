@@ -28,3 +28,8 @@ a{
 body{
   background: #f0eff4;
 }
+.myMenu .el-menu-item.is-active {
+  background: #f5f5f7;
+  border-left: 3px solid red;
+  box-sizing: border-box;
+}

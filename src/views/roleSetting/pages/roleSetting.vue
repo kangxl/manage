@@ -44,6 +44,7 @@
 </template>
 <script>
 export default {
+  name: 'RoleSetting',
   data () {
     return {
       form: {},

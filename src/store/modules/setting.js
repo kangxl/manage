@@ -1,3 +1,10 @@
+/*
+ * @Author: kangxl
+ * @Date: 2020-10-29 14:51:43
+ * @LastEditors: kangxl
+ * @LastEditTime: 2020-10-29 14:52:17
+ * @Description:
+ */
 export default {
   namespaced: true,
   state: {

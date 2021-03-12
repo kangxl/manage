@@ -1,3 +1,10 @@
+/*
+ * @Author: kangxl
+ * @Date: 2020-10-29 14:53:51
+ * @LastEditors: kangxl
+ * @LastEditTime: 2020-10-29 14:53:57
+ * @Description:
+ */
 import Vue from 'vue'
 import Vuex from 'vuex'
 import getters from './getters'

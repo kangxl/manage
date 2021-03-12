@@ -5,7 +5,7 @@
  * @LastEditTime: 2020-07-21 09:37:56
  * @Description:
  */
-// import Layout from '@/views/layout'
+import Layout from '@/views/layout'
 import ErrorPage401 from '@/views/layout/401'
 import ErrorPage404 from '@/views/layout/404'
 var homeRouter = [
@@ -23,6 +23,21 @@ var homeRouter = [
     meta: {
       hidden: true
     }
+  },
+  {
+    path: '/reload',
+    component: Layout,
+    children: [
+      {
+        name: 'Reload',
+        path: '/reload/:path(.*)',
+        component: () => import('../reload'),
+        meta: {
+          noCache: true,
+          noTag: true
+        }
+      }
+    ]
   },
   {
     path: '*', component: ErrorPage404,

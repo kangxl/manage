@@ -89,12 +89,13 @@ module.exports = {
     //     }
     //   }
     // ],
+    'vue/require-default-prop': 'off',
     'vue/singleline-html-element-content-newline': 'off',
     'vue/multiline-html-element-content-newline': 'off',
     'vue/name-property-casing': ['error', 'PascalCase'],
     'vue/no-v-html': 'off',
     'accessor-pairs': 2,
-    'no-restricted-globals':2,
+    'no-restricted-globals': 2,
     'arrow-spacing': [
       2,
       {
@@ -169,7 +170,7 @@ module.exports = {
     ],
     'new-parens': 2,
     'no-array-constructor': 2,
-    'no-restricted-properties':2,
+    'no-restricted-properties': 2,
     'no-caller': 2,
     'no-console': 'off',
     'no-class-assign': 2,
@@ -217,7 +218,7 @@ module.exports = {
     ],
     'no-native-reassign': 2,
     'no-negated-in-lhs': 2,
-    'object-shorthand':2,
+    'object-shorthand': 2,
     'no-new-object': 2,
     'no-new-require': 2,
     'no-new-symbol': 2,

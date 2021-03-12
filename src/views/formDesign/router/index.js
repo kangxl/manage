@@ -4,12 +4,14 @@ export default {
   path: '/form',
   component: Layout,
   children: [{
+    name: 'FormDesign',
     path: 'design',
-    menuName: '表单设计器',
-    icon: '',
     component: () => import('../pages/formDesign'),
     meta: {
-      authCode: 'no'
+      title: '表单设计器',
+      menuName: '表单设计器',
+      icon: '',
+      authCode: ''
     }
   }]
 }

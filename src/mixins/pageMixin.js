@@ -1,8 +1,8 @@
 /*
  * @Author: kangxl
  * @Date: 2020-02-25 14:18:29
- * @LastEditors: kangxl
- * @LastEditTime: 2020-04-16 15:59:33
+ * @LastEditors: guanzhenhua
+ * @LastEditTime: 2021-01-13 13:44:01
  * @Description: table分页混合
  * minix之外的参数：
  * pageConfig
@@ -17,9 +17,10 @@ var mixin = {
   data () {
     return {
       mixinPage: {
-        height: 300, // 计算table高度
+        isAutoLoad: true, // 是否自动加载-在createzhong 执行查询炒作
+        height: 400, // 计算table高度
         list: [], // 列表数据
-        pageSize: this.PAGESIZE, // 每页条数
+        pageSize: 20, // this.PAGESIZE, // 每页条数
         pageIndex: 1, // 第几页
         total: 0, // 一页多少条
         isLoading: false, // 是否加载中
@@ -29,7 +30,9 @@ var mixin = {
     }
   },
   created () {
-    this.mixin_page_getList()
+    if (this.mixinPage.isAutoLoad) {
+      this.mixin_page_getList()
+    }
     this.setTableHeight()
   },
   beforeDestroy () {
@@ -76,6 +79,7 @@ var mixin = {
               this.pageConfig.deleteCallBack(item)
             }
           })
+        }).catch(() => {
         })
       }
     },
@@ -92,6 +96,7 @@ var mixin = {
     mixin_page_seachList () {
       this.mixinPage.list = []
       this.mixinPage.pageIndex = 1
+      this.mixinPage.total = 0
       this.mixin_page_getList()
     },
     /**

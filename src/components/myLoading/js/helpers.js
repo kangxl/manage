@@ -4,12 +4,12 @@ const removeElement = (el) => {
   } else {
     el.parentNode.removeChild(el)
   }
-};
+}
 
 const hasWindow = () => {
-  return typeof window !== 'undefined';
-};
+  return typeof window !== 'undefined'
+}
 
-const HTMLElement = hasWindow() ? window.HTMLElement : Object;
+const HTMLElement = hasWindow() ? window.HTMLElement : Object
 
-export {removeElement, hasWindow, HTMLElement}
+export { removeElement, hasWindow, HTMLElement }

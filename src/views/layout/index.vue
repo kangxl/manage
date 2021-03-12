@@ -39,8 +39,8 @@
           :width="width"
           @change="getWidth"
         />
-        <el-main>
-          <!-- <tags-view /> -->
+        <el-main style="padding: 5px 10px;">
+          <tags-view class="test13" />
           <router-view />
         </el-main>
       </el-container>
@@ -48,40 +48,25 @@
   </el-container>
 </template>
 <script>
+import TagsView from '@/components/tagsView'
 import Top from './top'
 import ReziseWidth from '@/components/ReziseWidth'
 import { mapState } from 'vuex'
 import MenuItem from './menu-item'
-import { systemMenu } from '@/router'
+import { resources } from '@/router'
 export default {
   name: 'Layout',
   components: {
     Top,
-    // TagsView,
+    TagsView,
     ReziseWidth,
     MenuItem
   },
   data () {
+    console.log(1234, resources)
     return {
       openeds: ['2.1'],
-      menu: [
-        { index: '1', name: '导航1.1', icon: '', href: '' },
-        {
-          index: '1.1', name: '导航1', icon: '', href: '', children: [
-            { index: '1.1.1', name: '导航1.1', icon: '', href: '' }
-          ]
-        },
-        {
-          index: '2', name: '导航2', icon: '', href: '', children: [
-            { index: '2.1', name: '导航1.1', icon: '', href: '' }
-          ]
-        },
-        {
-          index: '3', name: '导航3', icon: '', href: '', children: [
-            { index: '3.1', name: '导航1.1', icon: '', href: '' }
-          ]
-        }
-      ],
+      menu: resources.menus,
       width: 200
     }
   },
@@ -97,7 +82,6 @@ export default {
     })
   },
   created () {
-    this.menu = this.getMenuList(systemMenu(), '', '')
   },
   methods: {
     getMenuList (list, parentPath, index) { // 通过路由获取菜单数据

@@ -5,5 +5,5 @@ import Bars from './bars.vue'
 export default {
   Spinner,
   Dots,
-  Bars,
+  Bars
 }

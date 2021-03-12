@@ -117,6 +117,7 @@
 <script>
 import RoleForm from './roleForm'
 export default {
+  name: 'RoleList1',
   components: {
     RoleForm
   },

@@ -2,16 +2,16 @@
   <transition :name="transition">
     <div
       v-show="isActive"
-      tabindex="0"
-      class="vld-overlay is-active"
-      :class="{ 'is-full-page': isFullPage }"
       :aria-busy="isActive"
       aria-label="Loading"
+      class="vld-overlay is-active"
+      :class="{ 'is-full-page': isFullPage }"
       :style="{ zIndex }"
+      tabindex="0"
     >
       <div
-        :style="{ background: backgroundColor, opacity }"
         class="vld-background"
+        :style="{ background: backgroundColor, opacity }"
         @click.prevent="cancel"
       />
       <div class="vld-icon">
@@ -20,8 +20,8 @@
           <component
             :is="loader"
             :color="color"
-            :width="width"
             :height="height"
+            :width="width"
           />
         </slot>
         <slot name="after" />

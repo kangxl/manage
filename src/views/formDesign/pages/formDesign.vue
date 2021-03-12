@@ -189,6 +189,7 @@ import Draggable from 'vuedraggable'
 import WidgetConfig from './WidgetConfig'
 import { basicComponents, layoutComponents } from './componentConfig'
 export default {
+  name: 'FormDesign',
   components: {
     MyAce,
     Draggable,

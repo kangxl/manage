@@ -1,7 +1,13 @@
-
+/*
+ * @Author: kangxl
+ * @Date: 2020-12-09 11:11:20
+ * @LastEditors: kangxl
+ * @LastEditTime: 2020-12-18 16:56:14
+ * @Description:
+ */
 import storage from '@/utils/storage'
 import { getUserInfo } from '@/views/layout/api'
-import { userLogin } from '@/views/login/api/loginApi'
+import settings from '@/config/settings'
 const user = {
   namespaced: true,
   state: {
@@ -21,21 +27,9 @@ const user = {
     }
   },
   actions: {
-    UserLogin({ commit }, data) {
-      return new Promise((resolve, reject) => {
-        userLogin(data).then(response => {
-          var authToken = response.data && response.data.token || ''
-          commit('SET_USERINFO', {})
-          storage.local.set('token', authToken)
-          resolve(response)
-        }).catch(error => {
-          reject(error)
-        })
-      })
-    },
 
     // 获取用户信息
-    GetUserInfo({ commit }) {
+    GetUserInfo ({ commit }) {
       return new Promise((resolve, reject) => {
         getUserInfo().then(response => {
           const data = response.data || {}
@@ -47,10 +41,12 @@ const user = {
       })
     },
     // 手动退出 不经过后台
-    FedLogOut({ commit }) {
+    FedLogOut ({ commit }) {
       return new Promise(resolve => {
-        commit('SET_USER', {})
-        storage.cookie.remove('Authorization')
+        commit('SET_USERINFO', {})
+        storage.local.remove('token')
+        storage.session.removeAll()
+        location.href = settings.componentAddress
         resolve()
       })
     }

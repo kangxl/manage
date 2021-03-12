@@ -27,9 +27,9 @@ Vue.use(VueEditor)
 Vue.use(permission)
 Vue.use(myLoading)
 Vue.prototype.$myImage = myImagePreview(Vue)
-if (process.env.VUE_APP_SYSTEM === 'aps') {
-  // 系统配置
-}
+// if (process.env.VUE_APP_SYSTEM === 'aps') {
+//   // 系统配置
+// }
 if (process.env.NODE_ENV === 'development') { // 开发环境时使用mock模拟数据
 
 }
