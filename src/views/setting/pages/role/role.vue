@@ -1,10 +1,3 @@
-<!--
- * @Author: kangxl
- * @Date: 2020-10-29 14:58:43
- * @LastEditors: kangxl
- * @LastEditTime: 2020-12-12 16:50:06
- * @Description:
- -->
 <template>
   <div>
     <div class="content-header lay-main lay-center-v lay-between">
@@ -25,7 +18,8 @@
               <input
                 v-model="pageConfig.conditions.keywords"
                 class="form-control"
-              /></div>
+              />
+            </div>
           </li>
           <li>
             <button
@@ -35,33 +29,34 @@
               <i
                 class="fa fa-search "
                 title="搜索"
-              /> </button></li>
+              /> </button>
+          </li>
         </ul>
       </div>
       <div>
         <el-table
           border
-          stripe
-          highlight-current-row
           :data="mixinPage.list"
+          highlight-current-row
           size="mini"
+          stripe
           style="width: 100%;"
         >
           <el-table-column
+            align="center"
             label="角色名称"
             prop="name"
-            align="center"
             show-overflow-tooltip
           />
           <el-table-column
+            align="center"
             label="更新人"
             prop="updaterName"
-            align="center"
             show-overflow-tooltip
           />
           <el-table-column
-            label="更新时间"
             align="center"
+            label="更新时间"
             show-overflow-tooltip
           >
             <template slot-scope="scope">
@@ -91,8 +86,8 @@
         <div class="text-center">
           <el-pagination
             :current-page.sync="mixinPage.pageIndex"
-            :page-size="mixinPage.pageSize"
             layout="total,prev, pager, next"
+            :page-size="mixinPage.pageSize"
             :total="mixinPage.total"
             @current-change="mixin_page_currentChange"
           />

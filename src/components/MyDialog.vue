@@ -12,12 +12,18 @@
       slot="footer"
       class="dialog-footer"
     >
-      <el-button @click="closeDialog">取消</el-button>
-      <el-button
-        :loading="loading"
-        type="primary"
-        @click="submitForm()"
-      >确定</el-button>
+      <slot name="btns">
+        <el-button
+          v-if="cancelBtnText"
+          @click="closeDialog"
+        >{{ cancelBtnText }}</el-button>
+        <el-button
+          v-if="submitBtnText"
+          :loading="loading"
+          type="primary"
+          @click="submitForm()"
+        >{{ submitBtnText }}</el-button>
+      </slot>
     </div>
   </el-dialog>
 </template>
@@ -25,6 +31,14 @@
 export default {
   name: 'MyDialog',
   props: {
+    cancelBtnText: {
+      default: '取消',
+      type: String
+    },
+    submitBtnText: {
+      default: '确定',
+      type: String
+    },
     isShowBtns: {
       default: true,
       type: Boolean
@@ -48,15 +62,9 @@ export default {
     }
   },
   methods: {
-    /**
-     * 关闭角色添加修改窗口
-     */
     closeDialog () {
       this.$emit('close')
     },
-    /**
-     * 提交角色添加修改数据
-     */
     submitForm () {
       this.$emit('submit')
     }

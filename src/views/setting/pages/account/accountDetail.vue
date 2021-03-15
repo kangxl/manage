@@ -6,12 +6,12 @@
  * @Description:
  -->
 <template>
-  <el-dialog
-    :append-to-body="true"
-    :visible.sync="isOpen"
-    title="账户详情"
+
+  <my-dialog
     width="80%"
-    @close="closeDialog"
+    title="账户详情"
+    @close="$emit('close')"
+    :isShowBtns="false"
   >
     <el-form
       ref="form"
@@ -46,7 +46,7 @@
         {{ $utils.getListAttrs(form.roleList,'name').join(',') }}
       </el-form-item>
     </el-form>
-  </el-dialog>
+  </my-dialog>
 </template>
 <script>
 import { getAccountById } from '../../api/accountApi'

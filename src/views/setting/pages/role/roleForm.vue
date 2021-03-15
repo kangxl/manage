@@ -1,16 +1,16 @@
 <template>
-  <el-dialog
-    :append-to-body="true"
-    :visible.sync="isOpen"
+  <my-dialog
+    :loading="loading"
     :title="getTitle"
     width="50%"
-    @close="closeDialog"
+    @close="$emit('close')"
+    @submit="submitForm"
   >
     <el-form
       ref="form"
+      label-width="80px"
       :model="form"
       :rules="formRules"
-      label-width="80px"
     >
       <el-form-item
         label="名称"
@@ -24,13 +24,13 @@
       >
         <el-tree
           ref="resourceTree"
-          :data="treeData"
-          :check-on-click-node="true"
-          :default-checked-keys="form.resourceIds"
-          :props="defaultProps"
           accordion
-          show-checkbox
+          :check-on-click-node="true"
+          :data="treeData"
+          :default-checked-keys="form.resourceIds"
           node-key="id"
+          :props="defaultProps"
+          show-checkbox
           @check="checkChange"
         >
           <template v-slot="scope">
@@ -51,18 +51,7 @@
         />
       </el-form-item>
     </el-form>
-    <div
-      slot="footer"
-      class="dialog-footer"
-    >
-      <el-button @click="closeDialog">取消</el-button>
-      <el-button
-        :loading="loading"
-        type="primary"
-        @click="submitForm()"
-      >提交</el-button>
-    </div>
-  </el-dialog>
+  </my-dialog>
 </template>
 <script>
 import { addRole, editRole, getRoleById } from '../../api/roleApi'
@@ -78,7 +67,6 @@ export default {
   data () {
     return {
       treeData: [],
-      isOpen: true,
       loading: false,
       form: {},
       defaultProps: {

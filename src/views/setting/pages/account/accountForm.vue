@@ -7,6 +7,7 @@
   >
     <el-form
       ref="form"
+      class="myForm"
       label-width="80px"
       :model="form"
       :rules="formRules"
