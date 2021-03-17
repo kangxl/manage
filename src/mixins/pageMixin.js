@@ -39,8 +39,10 @@ var mixin = {
     window.onresize = null
   },
   mounted () {
-    window.onresize = () => {
-      this.setTableHeight()
+    if (this.pageConfig.height) {
+      window.onresize = () => {
+        this.setTableHeight()
+      }
     }
   },
   methods: {

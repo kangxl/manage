@@ -22,9 +22,13 @@ import myImagePreview from '@/components/myImagePreview'
 import MyDialog from '@/components/MyDialog'
 import VueEditor from 'vue2-editor'
 import dragDialog from './directive/el-dragDialog'
+import MyTable from '@/components/myTable/MyTable'
+import MyInputSearchPopover from '@/components/myTable/MyInputSearchPopover'
 Vue.config.errorHandler = function (err, vm, info) {
   console.error('error', err, vm, info)
 }
+Vue.component('my-table', MyTable)
+Vue.component('my-input-search-popover', MyInputSearchPopover)
 Vue.component('my-dialog', MyDialog)
 Vue.use(dragDialog)
 Vue.use(VueEditor)
@@ -35,7 +39,7 @@ Vue.prototype.$myImage = myImagePreview(Vue)
 //   // 系统配置
 // }
 if (process.env.NODE_ENV === 'development') { // 开发环境时使用mock模拟数据
-
+  require('./views/setting/mock')
 }
 Vue.use(ElementUI, {
   size: storage.cookie.get('size') || 'medium'

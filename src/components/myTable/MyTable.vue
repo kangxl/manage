@@ -1,111 +1,94 @@
 <!--
- * @Author: kangxl
- * @Date: 2020-02-26 17:37:48
- * @LastEditors: kangxl
- * @LastEditTime: 2020-03-11 14:37:11
- * @Description: table,查询组件
+ table,查询组件
+ prop配置：
+ table 表格配置
+ columns 表格字段属性
+ pageConfig 分页相关配置
  template插槽：
-      1：search-front和search-back 查询条件前后条件自定义
-      2: search-btns 搜索位置操作按钮
-      3：table-handles-front 和table-handles-back  位于删除操作的前后位置
+      1：search 整个搜索区域重构
+      2: searchItems 搜索项区域区域重构
+      3：operateLeft 和 operateRight  table操作区左右区域
+      4: table 整个table重构
+      5: table中的prop:xxx 自定义列数据
 其他参照props
  -->
 
 <template>
-  <div :style="{height:'calc(100% - '+tableHeight+'px)' }">
-    <my-table-search
-      v-if="pageConfig.isNeedSearch"
-      ref="mySearch"
-      :conditions.sync="conditions"
-      :search-components="searchComponents"
-      @search="refreshList"
-    >
-      <template v-slot:front>
-        <slot name="search-front" />
-      </template>
-      <template v-slot:back>
-        <slot name="search-back" />
-      </template>
-      <template v-slot:btns>
-        <slot name="search-btns" />
-      </template>
-    </my-table-search>
-    <el-table
-      v-loading="mixinPage.isLoading"
-      border
-      :data="mixinPage.list"
-      height="100%"
-      highlight-current-row
-      style="width: 100%"
-    >
-      <el-table-column
-        v-for="item in columns"
-        :key="item.prop"
-        :label="item.label"
-        show-overflow-tooltip
-        :width="item.width"
+  <div class="myTable">
+    <div ref="tableTopArea">
+      <div class="search-area">
+        <el-form
+          class="myForm"
+          :inline="true"
+        >
+          <slot name="search">
+            <slot name="searchItems" />
+            <el-form-item v-if="$slots.searchItems">
+              <el-button
+                type="primary"
+                @click="search"
+              >查询</el-button>
+            </el-form-item>
+          </slot>
+        </el-form>
+      </div>
+      <div
+        v-if="$slots.operateLeft || $slots.operateRight"
+        class="operate-area "
       >
-        <template
-          v-if="item.type=='1'"
-          v-slot="scope"
-        >
-          <div v-html="item.transformFunc(scope,item.prop)" />
-        </template>
-        <template
-          v-else-if="item.type=='2'"
-          v-slot="scope"
-        >
-          <el-popover
-            placement="top"
-            trigger="hover"
-            width="160"
-          >
-            <el-link
-              v-if="scope.row[item.prop]"
-              slot="reference"
-              type="primary"
-            >{{ scope.row[item.prop].length }} 个</el-link>
-            <el-tag
-              v-for="(t,index) in scope.row[item.prop]"
-              :key="scope.$index+'-'+index"
-              class="label label-gray"
-              type="info"
-            >{{ t[item.keyName] }} </el-tag>
-          </el-popover>
-        </template>
-        <template
-          v-else
-          v-slot="scope"
-        >
-          {{ item.transformFunc?item.transformFunc(scope,item.prop):scope.row[item.prop] }}
-        </template>
-      </el-table-column>
-      <el-table-column
-        v-if="pageConfig.hasHandle"
-        label="操作"
-        :width="pageConfig.handleWidth||100"
+        <div class="lay">
+          <slot name="operateLeft" />
+        </div>
+        <slot name="operateRight" />
+      </div>
+    </div>
+    <slot name="table">
+      <el-table
+        v-loading="mixinPage.isLoading"
+        border
+        :data="mixinPage.list"
+        :height="height"
+        highlight-current-row
+        :max-height="maxHeight"
+        size="mini"
+        stripe
+        @current-change="handleCurrentChange"
+        @selection-change="handleSelectionChange"
       >
-        <template v-slot="scope">
-          <slot
-            name="table-handles-front"
-            :row="scope.row"
-          />
-          <el-tooltip
-            v-if="pageConfig.deleteRequest"
-            content="删除"
-            placement="top"
-          >
-            <a @click.stop.prevent="mixin_page_deleteRowData(scope.row, $event)">
-              <i class="fa fa-trash" /> </a>
-          </el-tooltip>
-          <slot
-            name="table-handles-back"
-            :row="scope.row"
-          />
-        </template>
-      </el-table-column>
-    </el-table>
-    <div class="text-center">
+        <el-table-column
+          v-if="table.isMultiple"
+          align="center"
+          type="selection"
+          width="50"
+        />
+        <el-table-column
+          v-for="(item,index) in columns"
+          :key="item.prop+index"
+          align="center"
+          :label="item.label"
+          show-overflow-tooltip
+          :width="item.width"
+        >
+          <template slot="header">
+            <slot :name="item.prop+'Header'">
+              {{ item.label }}
+            </slot>
+          </template>
+          <template v-slot="scope">
+            <slot
+              :item="scope"
+              :name="item.prop"
+            >
+              {{ scope.row[item.prop] }}
+            </slot>
+          </template>
+        </el-table-column>
+      </el-table>
+    </slot>
+    <div
+      v-if="table.isNeedPage"
+      class="text-center"
+    >
       <el-pagination
         :current-page.sync="mixinPage.pageNum"
         layout="total,prev, pager, next"
@@ -117,22 +100,28 @@
   </div>
 </template>
 <script>
-import MyTableSearch from '@/components/myTable/MyTableSearch'
 import pageMixin from '@/mixins/pageMixin'
 export default {
   name: 'MyTable',
-  components: {
-    MyTableSearch
-  },
   mixins: [pageMixin],
   props: {
+    table: {
+      type: Object,
+      default: () => {
+        return {
+          isMultiple: false, // 是否支持多选
+          height: 0, // table指定高度
+          otherHeight: 0, // 非table区域的高度
+          isNeedPage: true // 是否需要分页
+        }
+      }
+    },
     /**
      * 列数据
      * @param label 列标题 必填
      * @param width 列宽度
      * @param prop 列属性
-     * @param type 数据类型 1：直接显示 2：显示多个el-link和el-tag组合显示
-     * @param transformFunc 数据转换方法 返回(scope对象，当前prop属性)
+     * @param type 数据类型
      *
      */
     columns: {
@@ -141,46 +130,91 @@ export default {
     },
     /**
      * 配置信息
-     * @param hasHandle 是否有操作这一列
-     * @param handleWidth 操作栏宽度
      * @param queryRequest 分页查询请求
-     * @param deleteRequest 删除行数据请求
+     * @param queryCallBack // 查询成功回调函数 Function
+       @param deleteRequest // 删除接口API Function
+       @param  deleteCallBack // 删除成功回调函数 Function
      */
     pageConfig: {
       type: Object,
       default: () => { }
-    },
-    // 查询条件
-    conditions: {
-      type: Object,
-      default: () => { }
-    },
-    /**
-     * 查询条件
-     * @param type 查询组件类型  input select
-     * @param prop 分页查询请求
-     * @param placeholder 删除上数据请求
-     * @param list
-     *
-     */
-    searchComponents: {
-      type: Array,
-      default: () => []
     }
   },
   data () {
     return {
-      tableHeight: 0
+      maxHeight: '100%',
+      height: '100%',
+      otherHeight: 60 + 10 + 32 + 32 + 20 // 顶部+padding+tags+pagination+其他
     }
   },
   mounted () {
-    this.tableHeight = this.$refs.mySearch.$el.offsetHeight + 35
-    console.log(this.$refs.mySearch.$el, this.$refs.mySearch.$el.offsetHeight, this.$refs.mySearch.$el.clientHeight)
+    if (this.table.height) {
+      this.$nextTick(() => {
+        this.height = this.table.height
+      })
+    } else {
+      window.onresize = () => {
+        this.setTableAutoHeight()
+      }
+      this.setTableAutoHeight()
+    }
   },
   methods: {
-    refreshList () {
+    setTableAutoHeight () {
+      let h = 0
+      if (this.table.otherHeight > 0) {
+        h = window.innerHeight - this.table.otherHeight
+      } else {
+        let tableTopHeight = this.$refs.tableTopArea.offsetHeight
+        h = window.innerHeight - tableTopHeight - this.otherHeight
+      }
+      this.$nextTick(() => {
+        this.maxHeight = h
+        this.height = null
+      })
+    },
+    handleCurrentChange (row, oldRow) { // 获取当前选中行的数据
+      this.$emit('getCurrentRow', row)
+    },
+    search () { // 重新查询数据
+      this.mixin_page_seachList()
+    },
+    reload () { // 重新加载数据
       this.mixin_page_getList()
+    },
+    handleSelectionChange (val) { // 获取勾选的所有行
+      this.$emit('getSelectedRows', val)
     }
   }
 }
 </script>
+<style scoped lang="scss">
+.myTable {
+  .search-area {
+    border: 1px solid #eee;
+    margin-bottom: 5px;
+    background: #f9f9f9;
+    padding: 8px 15px;
+  }
+  .operate-area {
+    background: #f0f0f0;
+    padding: 3px 10px;
+    height: 25px;
+    line-height: 25px;
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .operate-area {
+    .lay {
+      -webkit-box-flex: 1;
+      flex: 1;
+      button {
+        padding: 5px;
+      }
+    }
+  }
+  .text-center {
+    text-align: center;
+  }
+}
+</style>

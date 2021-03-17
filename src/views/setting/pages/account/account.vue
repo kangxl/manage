@@ -1,168 +1,53 @@
 <template>
   <div>
-    <div class="search-area ">
-      <el-form
-        class="myForm"
-        :inline="true"
-        :model="pageConfig"
-      >
+    <my-table
+      ref="myTable"
+      :columns="columns"
+      :page-config="pageConfig"
+    >
+      <template v-slot:searchItems>
         <el-form-item label="审批人">
           <el-input
-            v-model="pageConfig.user"
+            v-model="pageConfig.conditions.b"
             placeholder="审批人"
-          ></el-input>
-        </el-form-item>
-        <el-form-item label="审批人">
-          <el-input
-            v-model="pageConfig.user"
-            placeholder="审批人"
-          ></el-input>
+          />
         </el-form-item>
         <el-form-item label="审批人">
           <el-input
-            v-model="pageConfig.user"
+            v-model="pageConfig.conditions.b"
             placeholder="审批人"
-          ></el-input>
+          />
         </el-form-item>
-        <el-form-item label="审批人">
-          <el-input
-            v-model="pageConfig.user"
-            placeholder="审批人"
-          ></el-input>
-        </el-form-item>
-        <el-form-item label="活动区域">
-          <el-select
-            v-model="pageConfig.region"
-            placeholder="活动区域"
-          >
-            <el-option
-              label="区域一"
-              value="shanghai"
-            ></el-option>
-            <el-option
-              label="区域二"
-              value="beijing"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary">查询</el-button>
-        </el-form-item>
-      </el-form>
-    </div>
-    <div class="operate-area ">
-      <div class="lay">
-        <el-button
-          icon="el-icon-edit"
-          size="mini"
-          round
-        >超小按钮</el-button>
-        <el-button
-          size="mini"
-          type="primary"
-          icon="el-icon-share"
-        >超小按钮</el-button>
-        <el-button
-          size="mini"
-          type="primary"
-          icon="el-icon-delete"
-          round
-        >超小按钮</el-button>
-        <el-button
-          size="mini"
-          round
-        >超小按钮</el-button>
-      </div>
-      <el-button
-        type="primary"
-        icon="el-icon-share"
-      >超小按钮</el-button>
-    </div>
-    <div>
-      <el-table
-        border
-        stripe
-        highlight-current-row
-        :data="mixinPage.list"
-        size="mini"
-        style="width: 100%;"
-      >
-        <el-table-column
-          label="账号"
-          prop="account"
-          align="center"
-          show-overflow-tooltip
-        >
-          <template slot-scope="scope">
-            <el-link
-              :underline="true"
-              @click="openDetail(scope.row)"
-            >{{ scope.row.account }}</el-link>
-          </template>
-        </el-table-column>
-        <el-table-column
-          label="创建时间"
-          align="center"
-          show-overflow-tooltip
-        >
-          <template slot-scope="scope">
-            {{ $date.formatDate(scope.row.createTime) }}
-          </template>
-        </el-table-column>
-        <el-table-column
-          label="更新人"
-          prop="updaterName"
-          align="center"
-          show-overflow-tooltip
+      </template>
+      <template v-slot:createTime="scope">
+        {{ $date.formatDate(scope.item.row.createTime) }}
+      </template>
+      <template v-slot:accountHeader>
+        <my-input-search-popover
+          v-model="pageConfig.conditions.b"
+          name="账号"
+          type="input"
+          @change="conditionChange('a',$event)"
         />
-        <el-table-column
-          label="更新时间"
-          align="center"
-          show-overflow-tooltip
+      </template>
+
+      <template v-slot:operation="scope">
+        <el-tooltip
+          content="修改"
+          placement="top"
         >
-          <template slot-scope="scope">
-            {{ $date.formatDate(scope.row.updateTime) }}
-          </template>
-        </el-table-column>
-        <el-table-column
-          align="center"
-          width="100"
-          label="操作"
+          <a @click="goToAccountForm(scope.item.row, scope.item.$index)"><i class="fa fa-pencil" />aaa</a>
+        </el-tooltip>
+        <el-tooltip
+          content="密码重置"
+          placement="top"
         >
-          <template slot-scope="scope">
-            <el-tooltip
-              content="修改"
-              placement="top"
-            >
-              <a @click="goToAccountForm(scope.row, scope.$index)"><i class="fa fa-pencil" /></a>
-            </el-tooltip>
-            <el-tooltip
-              content="删除"
-              placement="top"
-            >
-              <a @click="mixin_page_deleteRowData(scope.row, $event)"><i class="fa fa-trash" /> </a>
-            </el-tooltip>
-            <el-tooltip
-              content="密码重置"
-              placement="top"
-            >
-              <a @click="resetPassword(scope.row,$event)">
-                <i class="fa fa-key" />
-              </a>
-            </el-tooltip>
-          </template>
-        </el-table-column>
-      </el-table>
-      <div class="text-center">
-        <el-pagination
-          :current-page.sync="mixinPage.pageIndex"
-          :page-size="mixinPage.pageSize"
-          layout="total,prev, pager, next"
-          :total="mixinPage.total"
-          @current-change="mixin_page_currentChange"
-        />
-      </div>
-    </div>
+          <a @click="resetPassword(scope.item.row,$event)">
+            <i class="fa fa-key" />bbb
+          </a>
+        </el-tooltip>
+      </template>
+    </my-table>
     <account-form
       v-if="isShowEdit"
       :form-data="activeRow"
@@ -174,25 +59,41 @@
       @close="isShowDetail=false"
     />
   </div>
-
 </template>
 <script>
-import pageMixin from '@/mixins/pageMixin'
 import AccountForm from './accountForm'
 import AccountDetail from './accountDetail'
-
 import { getAccountList, deleteAccount, updateAccountPassword } from '../../api/accountApi'
 export default {
   name: 'AccountList',
   components: { AccountForm, AccountDetail },
-  mixins: [pageMixin],
   data () {
     return {
+      columns: [{
+        label: '名称1',
+        width: '',
+        prop: 'account',
+        transformFunc: null
+      }, {
+        label: '名称2',
+        prop: 'createTime'
+      }, {
+        label: '名称3',
+        prop: 'updaterName'
+      }, {
+        label: '名称4',
+        prop: 'updateTime'
+      }, {
+        label: '操作',
+        prop: 'operation'
+      }],
       pageConfig: {
         queryRequest: getAccountList,
         deleteRequest: deleteAccount,
         conditions: {
-          keywords: ''
+          keywords: '',
+          a: [],
+          b: ''
         }
       },
       activeRow: {},
@@ -201,13 +102,16 @@ export default {
     }
   },
   methods: {
+    conditionChange (prop, data) {
+      this.$refs.myTable.search()
+    },
     openDetail (row) {
-      console.log(123456, row)
       this.activeRow = row || {}
       this.isShowDetail = true
     },
     // 打开编辑弹窗
     goToAccountForm (row) {
+      console.log(12345, row)
       this.activeRow = row || {}
       this.isShowEdit = true
     },

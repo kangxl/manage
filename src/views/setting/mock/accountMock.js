@@ -11,7 +11,7 @@ import Mock from 'mockjs'
 export default {
   getAccountList: config => { // 账户列表
     return result.page(Mock.mock({
-      'list|10': [{
+      'list|20': [{
         'id': '@id()',
         'account': '@word(5,10)',
         'roleIds': [3, 4, 5, 6],

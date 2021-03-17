@@ -44,13 +44,11 @@ $--font-path: '~element-ui/lib/theme-chalk/fonts';
   padding-top: 4px;
   padding-bottom: 4px;
 }
+.el-table th.gutter{ //表格对不齐问题
+  display: table-cell !important;
+}
 .el-notification{
   transform: rotate(0deg) !important;
-}
-
-.el-input__inner{
-  // height:36px !important;
-  height:36px;
 }
 .el-upload input[type=file] {
   display: none !important;
@@ -67,10 +65,6 @@ $--font-path: '~element-ui/lib/theme-chalk/fonts';
 .el-tooltip__popper {
   max-width: 90%;
   line-height: 120%;
-}
-
-.el-form .el-form-item--medium .el-form-item__label {
-  line-height: 16px;
 }
 
 .my-scrollbar,.my-scrollbar .el-scrollbar__view{

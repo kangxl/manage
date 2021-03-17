@@ -50,7 +50,7 @@ Mock.mock(/\/user\/role\/list/, 'get', roleMock.getAllRoleList)
 Mock.mock(/\/user\/role\/*/, 'get', roleMock.getRoleDetail)
 
 // 账号列表
-Mock.mock(/\/test\/3.1/, 'get', accountMock.getAccountList)
+Mock.mock(/\/user-web-api\/user\/account\/page/, 'get', accountMock.getAccountList)
 // 添加账号
 Mock.mock(/\/test\/3.2/, 'post', result.success())
 // 修改角色
