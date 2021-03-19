@@ -1,10 +1,3 @@
-/*
- * @Author: kangxl
- * @Date: 2020-03-06 16:16:35
- * @LastEditors: guan zhenhua
- * @LastEditTime: 2020-08-05 08:42:51
- * @Description: 公用转换方法
- */
 export default {
   /**
    * 获取url后参数
@@ -75,15 +68,6 @@ export default {
       rgb.push(color)
     }
     return '#' + rgb.join('')
-  },
-  /**
-   * 验证身份证号
-   * @param el 号码输入input
-   * @returns {boolean}
-   */
-  checkCardNo (value) {
-    let reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/
-    return reg.test(value)
   },
   /**
    * 生成UUID
@@ -188,17 +172,13 @@ export default {
    * @param {*} key 属性key
    */
   getListAttrs (list, key) {
+    let arr = []
     if (Array.isArray(list)) {
-      var str = ''
       for (const item of list) {
-        str += '/' + item[key]
+        arr.push(item[key])
       }
-      if (str.length > 0) {
-        str = str.substring(1)
-      }
-      return str
     }
-    return ''
+    return arr
   },
   getObjectByAttr (value, list, attr) {
     for (const item of list) {
@@ -215,15 +195,15 @@ export default {
  * @param {*} key value对应的key
  * @param {*} attr 返回的某个属性的key
  */
-  getAttrByKey (value, list, key = 'value', attr = 'name') {
-    if (Array.isArray(value)) {
-      var str = ''
+  getAttrByKey (value, list, key = 'code', attr = 'name') {
+    if (Array.isArray(value)) { // 多选时需要返回多个
+      var arr = []
       for (const item of list) {
         if (value.indexOf(item[key]) > -1) {
-          str += '/' + item[attr]
+          arr.push(item[attr])
         }
       }
-      return str.substring(1)
+      return arr
     } else {
       for (const item of list) {
         if (item[key] == value) {
@@ -232,26 +212,12 @@ export default {
       }
     }
   },
-  getChildPage (item, list) {
-    var child = item.children || []
-    for (var i = 0; i < child.length; i++) {
-      if (child[i].path) {
-        if (this.hasPermission(list, child[i].authCode)) {
-          return child[i].path
-        }
-      } else {
-        if (child[i].children && child[i].children.length > 0) {
-          return this.getChildPage(child[i], list)
-        }
-      }
-    }
-  },
-  hasPermission (resource, authCode) {
+  hasPermission (code, codes) {
     // return true
-    if (authCode == 'no') {
+    if (!code) {
       return true
     } else {
-      if ((resource || []).indexOf(authCode) > -1) {
+      if ((codes || []).indexOf(code) > -1) {
         return true
       } else {
         return false

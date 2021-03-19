@@ -210,14 +210,12 @@ export default {
   },
   methods: {
     showPover () {
-      console.log(this.value)
     },
     /**
      * popover 关闭后事件响应
      */
     hidePover () {
       let value = this.type === 'select' ? this.$utils.getObjectByAttr(this.inputValue, this.list, this.selectValueName) : this.inputValue
-      console.log(this.oldValue == value, this.oldValue, value)
       if (this.isClickBtn || this.oldValue != value) {
         this.$emit('input', value)
         this.$emit('change', {

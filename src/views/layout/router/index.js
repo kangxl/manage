@@ -6,8 +6,8 @@
  * @Description:
  */
 import Layout from '@/views/layout'
-import ErrorPage401 from '@/views/layout/401'
-import ErrorPage404 from '@/views/layout/404'
+import ErrorPage401 from '../401'
+import ErrorPage404 from '../404'
 var homeRouter = [
   {
     path: '/401',
@@ -23,6 +23,19 @@ var homeRouter = [
     meta: {
       hidden: true
     }
+  }, {
+    path: '/home',
+    name: 'home',
+    component: Layout,
+    children: [
+      {
+        path: '',
+        component: () => import('../home'),
+        meta: {
+          hidden: true
+        }
+      }
+    ]
   },
   {
     path: '/reload',

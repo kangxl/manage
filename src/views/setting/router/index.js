@@ -10,7 +10,6 @@ var usertRouter = {
   path: '/setting',
   component: Layout,
   meta: {
-    title: '系统设置',
     menuName: '系统设置',
     icon: '',
     authCode: ''
@@ -36,6 +35,16 @@ var usertRouter = {
         menuName: '账号管理',
         icon: '',
         authCode: ''
+      }
+    },
+    {
+      path: 'account/detail',
+      name: 'AccountDetail',
+      component: () => import('../pages/account/accountDetail'),
+      meta: {
+        title: '账号详情',
+        authCode: '',
+        activeMenu: 'AccountList'
       }
     },
     {

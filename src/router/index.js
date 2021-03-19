@@ -2,7 +2,7 @@
  * 配置参数说明
  * 注意事项：
  * 1.页面级别的组件name必须和对应的路由name一样
- * 2.
+ * 2.组件name不能重复
  * meta
  *      title: tag标签名称
  *      menuName: 菜单名称

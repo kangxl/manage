@@ -84,16 +84,13 @@ export default {
       this.$emit('close')
     },
     submit () {
-      console.log(this.form, this.models)
       this.$refs.customForm.validate(valid => {
-        console.log(valid)
       })
     },
     getRule (item) {
       if (item.type == 1) { // 必填项
         return { required: true, message: item.message || '请输入', trigger: 'change' }
       } else if (item.type == 10 && (item.min > 0 || item.max > 0)) {
-        console.log(item)
         return { validator: lengthRangeFormValidate(item.min, item.max), trigger: 'blur' }
       }
     },
@@ -128,7 +125,6 @@ export default {
               }
             })]
           }
-          console.log(6666, this.rules)
         }
       }
     },

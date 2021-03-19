@@ -1,23 +1,17 @@
-<!--
- * @Author: fwp
- * @Date: 2020-06-04 14:03:34
- * @LastEditors: kangxl
- * @LastEditTime: 2020-12-03 10:19:37
- * @Description:
- -->
+
 <template>
   <el-dialog
-    :visible.sync="resourceDialogVisible"
     :append-to-body="true"
     :title="getTitle"
+    :visible.sync="resourceDialogVisible"
     width="80%"
     @close="closeDialog"
   >
     <el-form
       ref="resourceForm"
+      label-width="80px"
       :model="resourceForm"
       :rules="formDataRules"
-      label-width="80px"
     >
       <el-row>
         <el-col :span="12">
@@ -55,21 +49,21 @@
 
       <el-row style="text-align: center;">
         <el-button
-          type="text"
           icon="el-icon-document-add"
+          type="text"
           @click="addPath"
         >添加请求</el-button>
       </el-row>
       <el-form-item label="资源地址">
         <el-table
+          border
           :data="resourceForm.requestList"
           size="medium"
-          border
           style="width: 100%;"
         >
           <el-table-column
-            prop="url"
             label="url"
+            prop="url"
           >
             <template slot-scope="scope">
               <el-form-item
@@ -81,8 +75,8 @@
             </template>
           </el-table-column>
           <el-table-column
-            prop="method"
             label="method"
+            prop="method"
           >
             <template slot-scope="scope">
               <el-form-item
@@ -104,9 +98,9 @@
             </template>
           </el-table-column>
           <el-table-column
-            width="80px"
             align="center"
             label="删除"
+            width="80px"
           >
             <template slot-scope="scope">
               <el-tooltip

@@ -40,17 +40,17 @@
           @click="isShowDrawer=true"
         />
       </el-tooltip>
-
-      <el-tooltip
+      <!-- <el-tooltip
         content="字体大小"
         effect="dark"
         placement="bottom"
       >
         <i class="iconfont iconziti right-menu-item top-icon" />
-      </el-tooltip>
+      </el-tooltip> -->
       <el-dropdown
         class="avatar-container right-menu-item hover-effect"
         trigger="click"
+        @command="handleCommand"
       >
         <div class="avatar-wrapper">
           <img
@@ -60,7 +60,6 @@
           <i class="el-icon-caret-bottom" />
         </div>
         <el-dropdown-menu slot="dropdown">
-
           <router-link
             tag="li"
             to="/profile/index"
@@ -68,14 +67,14 @@
             <el-dropdown-item>个人信息</el-dropdown-item>
           </router-link>
           <el-dropdown-item
+            command="password"
             divided
-            @click.native="logout"
           >
             <span style="display:block;">修改密码</span>
           </el-dropdown-item>
           <el-dropdown-item
+            command="logout"
             divided
-            @click.native="logout"
           >
             <span style="display:block;">退出</span>
           </el-dropdown-item>
@@ -83,25 +82,41 @@
       </el-dropdown>
     </div>
     <setting :is-show-drawer.sync="isShowDrawer" />
+    <update-password
+      v-if="isEditPassword"
+      @close="isEditPassword=false"
+    />
   </el-header>
 </template>
 
 <script>
-
+import UpdatePassword from './UpdatePassword'
 import Screenfull from '@/components/Screenfull'
 import Setting from './setting'
 export default {
   components: {
     Screenfull,
-    Setting
+    Setting,
+    UpdatePassword
   },
   data () {
     return {
-      isShowDrawer: false
+      isShowDrawer: false,
+      isEditPassword: false
     }
   },
   methods: {
-
+    logout () {
+    },
+    handleCommand (command) {
+      if (command == 'password') {
+        this.isEditPassword = true
+      } else if (command == 'logout') {
+        this.$store.dispatch('user/FedLogOut').then(() => {
+          this.$router.replace('/login')
+        })
+      }
+    }
   }
 }
 </script>

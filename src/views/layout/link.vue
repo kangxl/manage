@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import { isExternal } from '@/utils/validate'
+import { url_reg } from '@/utils/validate'
 
 export default {
   props: {
@@ -19,7 +19,7 @@ export default {
   },
   computed: {
     isExternal () {
-      return isExternal(this.to)
+      return url_reg.test(this.to)
     },
     type () {
       if (this.isExternal) {

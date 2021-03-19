@@ -1,16 +1,16 @@
 <template>
   <el-dialog
     :append-to-body="true"
-    :visible.sync="isOpen"
     :title="getTitle"
+    :visible.sync="isOpen"
     width="50%"
     @close="closeDialog"
   >
     <el-form
       ref="form"
+      label-width="80px"
       :model="form"
       :rules="formRules"
-      label-width="80px"
     >
       <el-row>
         <el-col :span="12">
@@ -38,10 +38,10 @@
           >
             <el-cascader
               v-model="form.deptId"
-              style="width:100%"
+              clearable
               :options="departmentTree"
               :props="{ checkStrictly: true,emitPath:false,label:'name',value:'id'}"
-              clearable
+              style="width:100%"
             />
           </el-form-item>
         </el-col>
@@ -52,8 +52,8 @@
           >
             <el-checkbox
               v-model="form.isApproval"
-              :true-label="1"
               :false-label="0"
+              :true-label="1"
             />
           </el-form-item>
         </el-col>
@@ -151,7 +151,6 @@ export default {
       getDepartmentTreeList().then(res => {
         let list = res && res.data || []
         this.setEmptyArrayToNull(list)
-        console.log(12345, list, res)
         this.departmentTree = list
       })
     },

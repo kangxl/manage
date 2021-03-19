@@ -12,7 +12,6 @@ export default {
       if (!this.$el || !this.isActive) {
         return
       }
-      console.log(this.$el)
       if (
         // Event target is the loading div element itself
         event.target === this.$el ||

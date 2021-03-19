@@ -94,7 +94,7 @@ export default {
     },
     addTags () {
       const { meta } = this.$route
-      if (!meta.noTag) {
+      if (!meta.noTag && meta.title) {
         this.$store.dispatch('tagsView/addVisitedView', this.$route)
       }
       return false

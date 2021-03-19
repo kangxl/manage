@@ -1,82 +1,75 @@
 <template>
-  <div>
-    <div class="login-bg" />
-    <section class="loginContainer corner-6  animation-pullDown">
-      <header>
-        <h2>
-          <img
-            src="@/images/pic-boy.jpg"
-            style="height: 28px;position: relative;top:-2px;"
-          > {{ title }}
-        </h2>
-      </header>
-      <el-form
-        ref="loginForm"
-        class="demo-ruleForm"
-        :model="loginForm"
-        :rules="loginRules"
-      >
-        <el-form-item prop="username">
-          <el-input
-            v-model.trim="loginForm.username"
-            autocomplete="off"
-            class="inpu-list"
-            placeholder="用户名"
-            prefix-icon="fa fa-user-o"
-            type="text"
-          />
-        </el-form-item>
-        <el-form-item prop="password">
-          <el-input
-            v-model.trim="loginForm.password"
-            autocomplete="off"
-            class="inpu-list"
-            placeholder="密码"
-            prefix-icon="fa fa-key"
-            type="password"
-          />
-        </el-form-item>
-        <el-form-item>
-          <my-button
-            class="btn btn-primary"
-            :loading="loading"
-            @click.native.prevent="login"
-          >登录
-            <a class="fa fa-arrow-circle-right" />
-          </my-button>
-        </el-form-item>
-      </el-form>
-    </section>
+  <div class="limiter">
+    <div class="container-login100">
+      <div class="wrap-login100">
+        <div class="login100-form-title">
+          <span class="login100-form-title-1"> 采购管理系统 </span>
+        </div>
+        <el-form
+          ref="loginForm"
+          label-width="120"
+          :model="loginForm"
+          :rules="loginRules"
+          style="margin: 0 auto;padding-top:20px;
+    width: 400px;"
+        >
+          <el-form-item prop="account">
+            <el-input
+              name="account"
+              style="display:none;"
+              type="text"
+            />
+            <el-input
+              v-model.trim="loginForm.account"
+              autocomplete="off"
+              name="account"
+              placeholder="账号"
+              type="text"
+              @keyup.native.enter="login"
+            />
+          </el-form-item>
+          <el-form-item prop="password">
+            <el-input
+              name="password"
+              style="display:none;"
+              type="text"
+            />
+            <el-input
+              v-model.trim="loginForm.password"
+              autocomplete="new-password"
+              name="password"
+              placeholder="密码"
+              type="password"
+              @keyup.native.enter="login"
+            />
+          </el-form-item>
+          <el-form-item style="text-align: center;">
+            <el-button
+              style="width:100%"
+              type="primary"
+              @click="login"
+            >提交</el-button>
+          </el-form-item>
+        </el-form>
+      </div>
+    </div>
   </div>
 </template>
 <script>
-import MyButton from '@/components/MyButton'
-import settings from '@/config/settings'
-import storage from '@/utils/storage'
 export default {
   name: 'Login',
-  components: { MyButton },
   data () {
     return {
-      title: settings.title,
       loading: false,
       isRemember: false,
       loginForm: {
-        username: '',
+        account: '',
         password: ''
       },
       loginRules: {
-        username: [{ required: true, trigger: 'change', message: '请输入用户名' }],
+        account: [{ required: true, trigger: 'change', message: '请输入用户名' }],
         password: [{ required: true, trigger: 'change', message: '请输入密码' }]
       }
-    }
-  },
-  mounted () {
-    var loginInfo = storage.local.getJson('loginInfo') || {}
-    if (loginInfo.username && loginInfo.password) {
-      this.loginForm.username = loginInfo.username
-      this.loginForm.password = loginInfo.password
-      this.isRemember = true
     }
   },
   methods: {
@@ -84,48 +77,84 @@ export default {
       this.loading = true
       this.$refs.loginForm.validate(valid => {
         if (valid) {
-          this.$store.dispatch('userLogin', this.loginForm).then((result) => {
-            console.log(result)
-            if (this.isRemember) {
-              storage.local.setJson('loginInfo', this.loginForm)
-            } else {
-              storage.local.remove('loginInfo')
-            }
-            this.$router.replace({ path: '/home' })
-            this.loading = false
-          }).catch(() => {
-            this.loading = false
+          this.$store.dispatch('user/UserLogin', this.loginForm).then(res => {
+            this.$router.replace({
+              path: '/home'
+            })
           })
         } else {
           this.loading = false
         }
       })
     }
-    // enterMethod(e) {
-    //   const key = e.keyCode || e.which || e.charCode
-    //   if (key === 13) {
-    //     this.login()
-    //   }
-    // }
   }
 }
 </script>
-<style scope>
-.loginContainer .el-form-item {
-  margin-bottom: 0px !important;
-  margin-top: 30px !important;
+<style scoped>
+.limiter {
+  width: 100%;
+  margin: 0 auto;
 }
-.demo-ruleForm {
-  margin-top: -80px;
+
+.container-login100 {
+  width: 100%;
+  min-height: 100vh;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
+  background: #ebeeef;
 }
-.inpu-list:after {
-  top: 33px;
+.wrap-login100 {
+  width: 670px;
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
 }
-.loginContainer input[type="text"],
-.loginContainer input[type="password"] {
-  margin-top: 0px;
+.login100-form-title {
+  background-image: url(/images/bg-01.jpg);
+  width: 100%;
+  position: relative;
+  z-index: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+
+  padding: 70px 15px 74px 15px;
 }
-.loginContainer .btn {
-  margin-top: 0px;
+
+.login100-form-title-1 {
+  font-family: Poppins-Bold;
+  font-size: 30px;
+  color: #fff;
+  text-transform: uppercase;
+  line-height: 1.2;
+  text-align: center;
+}
+
+.login100-form-title::before {
+  content: "";
+  display: block;
+  position: absolute;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-color: rgba(54, 84, 99, 0.7);
 }
 </style>

@@ -9,7 +9,7 @@
       :index="item.index"
     >
       <item
-        icon="el-icon-location"
+        :icon="item.icon"
         :title="item.name"
       />
     </el-menu-item>
@@ -22,7 +22,7 @@
   >
     <template slot="title">
       <item
-        icon="el-icon-location"
+        :icon="item.icon"
         :title="item.name"
       />
     </template>

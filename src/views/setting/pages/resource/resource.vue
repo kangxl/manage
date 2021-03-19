@@ -12,10 +12,10 @@
     </div>
     <el-tree
       :data="treeList"
-      :props="props"
-      node-key="id"
       default-expand-all
       :expand-on-click-node="false"
+      node-key="id"
+      :props="props"
     >
       <template v-slot="scope">
         <span class="custom-tree-node">
@@ -23,23 +23,23 @@
           <span>
             <el-button
               v-if="scope.data.type == 'system'"
-              type="text"
               size="mini"
+              type="text"
               @click="() => append(scope)"
             >
               添加
             </el-button>
             <el-button
-              type="text"
               size="mini"
+              type="text"
               @click="() => edit(scope)"
             >
               修改
             </el-button>
             <el-button
               v-if="!scope.data.children || scope.data.children.length==0"
-              type="text"
               size="mini"
+              type="text"
               @click="() => remove(scope)"
             >
               删除
@@ -50,8 +50,8 @@
     </el-tree>
     <resource-modal
       v-if="dialogFormVisible"
-      :parent="parent.data||{}"
       :node-id="node.data&&node.data.id||''"
+      :parent="parent.data||{}"
       @close="closeCallback"
     />
   </div>
@@ -106,8 +106,6 @@ export default {
       })
     },
     closeCallback (data) {
-      console.log('返回数据', data, this.parent, this.node)
-
       this.dialogFormVisible = false
       if (data) {
         if (this.node.data && this.node.data.id) { // 修改

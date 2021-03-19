@@ -1,31 +1,31 @@
 <template>
   <div style="display: inline-block;">
     <el-upload
+      :action="action"
       class="avatar-uploader"
       :class="{'my-upload-no-show': files.length>=limit}"
-      :action="action"
-      :multiple="multiple"
-      :drag="drag"
       :disabled="disabled"
-      :show-file-list="showFileList"
-      :list-type="listType"
-      :file-list="files"
-      :limit="limit"
-      :headers="headers"
+      :drag="drag"
       :data="data"
-      :name="name"
-      :with-credentials="withCredentials"
+      :file-list="files"
+      :headers="headers"
       :accept="accept"
+      :limit="limit"
       :auto-upload="autoUpload"
-      :on-success="handleSuccess"
+      :list-type="listType"
+      :multiple="multiple"
+      :name="name"
       :before-remove="handleBeforeRemove"
+      :on-success="handleSuccess"
       :http-request="uploadSectionFile"
+      :show-file-list="showFileList"
       :on-remove="handleRemove"
       :on-preview="handlePreview"
       :on-error="handleError"
       :on-progress="handleProgress"
       :on-change="handleChange"
       :on-exceed="handleExceed"
+      :with-credentials="withCredentials"
       :before-upload="handleBeforeUpload"
     >
       <el-button
@@ -36,7 +36,8 @@
         <i
           class="fa fa-upload"
           style="color:#FFF"
-        >{{ btnText }}</i></el-button>
+        >{{ btnText }}</i>
+      </el-button>
       <i
         v-if="fileType=='logo' && files.length == 0"
         class="el-icon-plus avatar-uploader-icon"
@@ -86,11 +87,11 @@
       >
         <el-link
           class="my-file-link"
-          :style="{width:fileTagWidth+'px'}"
-          type="primary"
-          :title="f.name || f.fileName"
           :href="f.url"
+          :style="{width:fileTagWidth+'px'}"
           target="_blank"
+          :title="f.name || f.fileName"
+          type="primary"
         >{{ f.name || f.fileName }} </el-link>
         <i
           v-if="isShowFileClose"
@@ -106,10 +107,10 @@
       :visible.sync="dialogVisible"
     >
       <img
-        width="100%"
-        style="min-height:100px"
-        :src="previewImg.url"
         alt=""
+        :src="previewImg.url"
+        style="min-height:100px"
+        width="100%"
       >
     </el-dialog>
   </div>
@@ -373,12 +374,11 @@ export default {
       // 文件对象
       form.append('file', fileObj)
       uploadFile(form, this.newUrl ? (this.$settings.uploadAddress + this.newUrl) : this.uploadAddress).then(res => {
-        console.log(res)
         if (res.code == 0) {
           this.formatFileData(res.data)
         }
       }).catch((e) => {
-        console.log(e)
+        console.error(e)
         this.filterErrorFile()
       })
     },

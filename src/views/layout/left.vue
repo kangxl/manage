@@ -76,10 +76,17 @@ export default {
     font-size: 10px;
   }
 }
-.myMenu,
-.myMenu .el-menu {
+.myMenu {
   height: 100%;
-  /* background-image: linear-gradient(#3782ad, #00ffb8); */
+  .el-menu {
+    height: 100%;
+  }
+  .el-menu-item.is-active,
+  .el-submenu.is-active:not(.is-opened) {
+    background: #f5f5f7 !important;
+    border-left: 3px solid red;
+    box-sizing: border-box;
+  }
 }
 .my-scrollbar .el-scrollbar__wrap {
   overflow-y: auto;

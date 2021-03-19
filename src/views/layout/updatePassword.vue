@@ -1,73 +1,75 @@
 <template>
-  <div class="task-content">
-    <ul class=" nav-menu">
-      <li class="active"> <span class="hr-rank"> 修改密码</span></li>
-    </ul>
-    <div class="block-wrap passwordWrap">
-      <div class="user-infor">
-        <el-form
-          ref="updatePasswordForm"
-          label-width="120px"
-          :model="updatePasswordForm"
-          :rules="passwordRules"
-        >
-          <el-form-item
-            label="旧密码"
-            prop="oldPassword"
-          >
-            <el-input
-              v-model.trim="updatePasswordForm.oldPassword"
-              auto-complete="off"
-              type="password"
-            />
-          </el-form-item>
-          <el-form-item
-            label="新密码"
-            prop="newPassword"
-          >
-            <el-input
-              v-model.trim="updatePasswordForm.newPassword"
-              auto-complete="off"
-              type="password"
-            />
-          </el-form-item>
-          <el-form-item
-            label="确认密码"
-            prop="checkPass"
-          >
-            <el-input
-              v-model.trim="updatePasswordForm.checkPass"
-              auto-complete="off"
-              type="password"
-            />
-          </el-form-item>
-          <el-form-item>
-            <el-button
-              class="save"
-              type="primary"
-              @click="submit"
-            >保存</el-button>
-          </el-form-item>
-        </el-form>
+  <el-dialog
+    :append-to-body="true"
+    title="密码修改"
+    :visible.sync="isOpen"
+    width="600px"
+    @close="closeDialog"
+  >
+    <el-form
+      ref="updatePasswordForm"
+      class="demo-ruleForm"
+      label-width="120px"
+      :model="updatePasswordForm"
+      :rules="passwordRules"
+    >
+      <el-form-item
+        label="旧密码"
+        prop="oldPassword"
+      >
+        <el-input
+          v-model.trim="updatePasswordForm.oldPassword"
+          auto-complete="off"
+          type="password"
+        />
+      </el-form-item>
+      <el-form-item
+        label="新密码"
+        prop="newPassword"
+      >
+        <el-input
+          v-model.trim="updatePasswordForm.newPassword"
+          auto-complete="off"
+          type="password"
+        />
+      </el-form-item>
+      <el-form-item
+        label="确认密码"
+        prop="checkPass"
+      >
+        <el-input
+          v-model.trim="updatePasswordForm.checkPass"
+          auto-complete="off"
+          type="password"
+        />
+      </el-form-item>
 
-      </div>
-
+    </el-form>
+    <div
+      slot="footer"
+      class="dialog-footer"
+    >
+      <el-button @click.native.prevent="closeDialog">取消</el-button>
+      <el-button
+        :loading="loading"
+        type="primary"
+        @click.native.prevent="ok"
+      >确定</el-button>
     </div>
-
-  </div>
+  </el-dialog>
 </template>
 <script>
-import storage from '@/utils/storage'
 import { updateUserPassword } from '../layout/api'
 export default {
+
   name: 'UpdatePassword',
   data () {
     var validatePass0 = (rule, value, callback) => {
       value = value.trim()
       if (!value) {
         callback(new Error('请输入旧密码'))
-      } else if (!this.$validate.validatePassword(value)) {
-        callback(new Error(this.$validateForm.PASSWORD_ERROR_MSG))
+      } else if (!this.$validate.password_reg.test(value)) {
+        callback(new Error(this.$validate.password_reg_msg))
       } else {
         callback()
       }
@@ -76,8 +78,8 @@ export default {
       value = value.trim()
       if (!value) {
         callback(new Error('请输入新密码'))
-      } else if (!this.$validate.validatePassword(value)) {
-        callback(new Error(this.$validateForm.PASSWORD_ERROR_MSG))
+      } else if (!this.$validate.password_reg.test(value)) {
+        callback(new Error(this.$validate.password_reg_msg))
       } else {
         if (this.updatePasswordForm.checkPass !== '') {
           this.$refs.updatePasswordForm.validateField('checkPass')
@@ -111,23 +113,24 @@ export default {
     }
   },
   methods: {
-    submit () {
+    closeDialog () {
+      this.$emit('close')
+    },
+    ok () {
       this.loading = true
       this.$refs.updatePasswordForm.validate(valid => {
         if (valid) {
           var data = {
             oldPassword: this.updatePasswordForm.oldPassword,
-            newPassword: this.updatePasswordForm.newPassword
+            password: this.updatePasswordForm.newPassword
           }
           updateUserPassword(data).then(rep => {
-            var token = rep.data && rep.data.token || ''
-            storage.local.set('token', token)
             this.$message({
               message: '密码修改成功！',
               type: 'success'
             })
             this.loading = false
-            this.$emit('closeUpdatePasswordDialog')
+            this.$emit('close')
           }).catch(() => {
             this.loading = false
           })
@@ -140,8 +143,3 @@ export default {
 
 }
 </script>
-<style scoped>
-.passwordWrap .user-infor {
-  width: 600px;
-}
-</style>

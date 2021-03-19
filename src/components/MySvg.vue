@@ -7,8 +7,8 @@
  -->
 <template>
   <svg
-    :class="svgClass"
     aria-hidden="true"
+    :class="svgClass"
     v-on="$listeners"
   >
     <use :href="iconName" />

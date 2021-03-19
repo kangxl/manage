@@ -1,13 +1,6 @@
-/*
- * @Author: kangxl
- * @Date: 2020-12-09 11:11:20
- * @LastEditors: kangxl
- * @LastEditTime: 2020-12-18 16:56:14
- * @Description:
- */
 import storage from '@/utils/storage'
 import { getUserInfo } from '@/views/layout/api'
-import settings from '@/config/settings'
+import { userLogin } from '@/views/login/api/loginApi'
 const user = {
   namespaced: true,
   state: {
@@ -27,7 +20,22 @@ const user = {
     }
   },
   actions: {
-
+    UserLogin ({ commit }, data) {
+      return new Promise((resolve, reject) => {
+        userLogin(data).then(response => {
+          commit('SET_USERINFO', {})
+          const data = response.data || {}
+          if (data.token) {
+            storage.local.set('token', data.token)
+            resolve(data)
+          } else {
+            reject(new Error('token丢失！'))
+          }
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
     // 获取用户信息
     GetUserInfo ({ commit }) {
       return new Promise((resolve, reject) => {
@@ -46,7 +54,6 @@ const user = {
         commit('SET_USERINFO', {})
         storage.local.remove('token')
         storage.session.removeAll()
-        location.href = settings.componentAddress
         resolve()
       })
     }

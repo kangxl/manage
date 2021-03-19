@@ -163,7 +163,6 @@ export default {
     }
   },
   created () {
-    console.log(this.models, this.widget.prop)
   },
   methods: {
   }

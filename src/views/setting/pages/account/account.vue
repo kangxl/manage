@@ -111,7 +111,6 @@ export default {
     },
     // 打开编辑弹窗
     goToAccountForm (row) {
-      console.log(12345, row)
       this.activeRow = row || {}
       this.isShowEdit = true
     },

@@ -1,3 +1,4 @@
+import utils from '../utils'
 export default {
   /**
    * 复制数组
@@ -28,16 +29,18 @@ export default {
     }
     return {}
   },
+  getName (key, gKey) {
+    let list = this[gKey] && this[gKey].list || []
+    return utils.getAttrByKey(key, list)
+  },
   getMoreName (gKey, codes) {
     let arr = []
-    if (gKey && codes) {
-      var keys = Array.isArray(codes) ? codes : codes.split(',')
-      let list = this[gKey] && this[gKey].list || []
-      for (let i = 0; i < list.length; i++) {
-        let obj = list[i]
-        if (keys.indexOf(obj.code)) {
-          arr.push(obj.name)
-        }
+    var keys = Array.isArray(codes) ? codes : codes.split(',')
+    let list = this[gKey] && this[gKey].list || []
+    for (let i = 0; i < list.length; i++) {
+      let obj = list[i]
+      if (keys.indexOf(obj.code)) {
+        arr.push(obj.name)
       }
     }
     return arr
